@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>집계 함수 없는 SQL 서브쿼리 연습문제 10문제</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --paper: #ffffff;
+      --ink: #22242a;
+      --muted: #5f6673;
+      --line: #d9dfeb;
+      --brand: #3457d5;
+      --brand-soft: #eef2ff;
+      --green: #12805c;
+      --green-soft: #eaf8f2;
+      --orange: #b85c00;
+      --orange-soft: #fff4e6;
+      --code-bg: #151922;
+      --code-ink: #e8edf7;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 18px 72px;
+    }
+    .hero {
+      background: linear-gradient(135deg, #1d2b64, #3457d5 52%, #6a7dff);
+      color: white;
+      border-radius: 26px;
+      padding: 44px 38px;
+      box-shadow: 0 16px 40px rgba(29,43,100,.22);
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.2;
+      letter-spacing: -1px;
+    }
+    .hero p { margin: 8px 0 0; font-size: 18px; opacity: .94; }
+    .badges { display:flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.22);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .card, .problem {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 26px;
+      margin: 20px 0;
+      box-shadow: 0 8px 24px rgba(35,45,75,.06);
+    }
+    h2 {
+      margin: 6px 0 18px;
+      font-size: 28px;
+      letter-spacing: -.4px;
+      border-left: 7px solid var(--brand);
+      padding-left: 14px;
+    }
+    h3 {
+      margin: 14px 0 10px;
+      font-size: 23px;
+      line-height: 1.45;
+      letter-spacing: -.2px;
+    }
+    h4 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    p { margin: 8px 0; }
+    .small { color: var(--muted); font-size: 14px; }
+    .muted { color: var(--muted); }
+    code {
+      font-family: Consolas, "Cascadia Code", "Courier New", monospace;
+      background: #eef1f7;
+      padding: 2px 6px;
+      border-radius: 6px;
+      word-break: break-word;
+    }
+    pre {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      padding: 18px 20px;
+      border-radius: 16px;
+      overflow-x: auto;
+      margin: 10px 0 0;
+      line-height: 1.55;
+      white-space: pre;
+      border: 1px solid #2a3140;
+    }
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+      font-size: 15px;
+    }
+    .toc {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .toc a {
+      color: var(--ink);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fbfcff;
+      font-weight: 700;
+    }
+    .toc a:hover { border-color: var(--brand); background: var(--brand-soft); }
+    .schema { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 16px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid var(--line); padding: 10px 12px; vertical-align: top; }
+    th { background: #f2f5fc; text-align: left; }
+    .grid.two {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
+      gap: 14px;
+    }
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      margin: 14px 0;
+      background: #fff;
+    }
+    .box.soft { background: var(--brand-soft); border-color: #cdd8ff; }
+    .box.answer { background: var(--green-soft); border-color: #bfe8d8; }
+    .final-sql { background: #fbfcff; }
+    .result-box { background: #fcfcfd; }
+    .problem-head { display:flex; gap: 8px; align-items:center; flex-wrap: wrap; }
+    .qno {
+      background: var(--brand);
+      color: white;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+    }
+    .level {
+      background: var(--orange-soft);
+      color: var(--orange);
+      border: 1px solid #ffd8aa;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .concept {
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .teacher-note {
+      background: #fffaf0;
+      border: 1px solid #ffe0a3;
+      border-left: 7px solid #f5a623;
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-top: 16px;
+    }
+    .teacher-note p { margin-bottom: 0; }
+    .result-wrap { overflow-x: auto; }
+    .result th { background: #ecfdf5; }
+    .explain th:first-child { width: 40%; }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .flow div {
+      border: 1px solid #cdd8ff;
+      background: var(--brand-soft);
+      border-radius: 18px;
+      padding: 16px;
+      min-height: 110px;
+    }
+    .flow strong { display: block; font-size: 18px; margin-bottom: 6px; color: var(--brand); }
+    .warning {
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+      border-left: 7px solid #e11d48;
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-top: 14px;
+    }
+    .summary-list li { margin-bottom: 8px; }
+    .print-tip {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 14px 16px;
+      border-radius: 16px;
+      margin-top: 16px;
+      color: #166534;
+      font-weight: 700;
+    }
+    @media (max-width: 780px) {
+      .hero { padding: 30px 24px; }
+      .grid.two, .flow { grid-template-columns: 1fr; }
+      .card, .problem { padding: 20px; }
+      th, td { padding: 8px; }
+    }
+    @media print {
+      body { background: white; }
+      .page { max-width: none; padding: 0; }
+      .hero { box-shadow: none; border-radius: 0; }
+      .card, .problem { box-shadow: none; page-break-inside: avoid; }
+      a { color: black; text-decoration: none; }
+      pre { white-space: pre-wrap; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="badges">
+        <span class="badge">SQL</span>
+        <span class="badge">서브쿼리</span>
+        <span class="badge">집계 함수 미사용</span>
+        <span class="badge">비전공자 설명용</span>
+      </div>
+      <h1>집계 함수 없는 SQL 서브쿼리 연습문제 10문제</h1>
+      <p>member / buy 테이블 기준 · 문제, 풀이, 실행 순서, 줄별 설명, 강의 멘트 포함</p>
+    </header>
+
+    <section class="card">
+      <h2>이 문서의 학습 범위</h2>
+      <p>이 문서는 아직 <strong>집계 함수</strong>를 배우지 않은 학습자를 기준으로 작성했습니다.</p>
+      <ul class="summary-list">
+        <li>사용하지 않는 문법: <code>COUNT()</code>, <code>SUM()</code>, <code>AVG()</code>, <code>MAX()</code>, <code>MIN()</code>, <code>GROUP BY</code></li>
+        <li>사용하는 문법: <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>AND</code>, <code>IN</code>, <code>NOT IN</code>, 비교 연산자, 서브쿼리</li>
+        <li>목표: 괄호 안쪽 SELECT가 먼저 실행되고, 그 결과가 바깥쪽 WHERE 조건에 사용되는 흐름을 이해하기</li>
+      </ul>
+      <div class="print-tip">💡 브라우저에서 Ctrl + P를 누르면 이 HTML 문서를 PDF로 저장할 수도 있습니다.</div>
+    </section>
+
+    <section class="card">
+      <h2>사용 테이블 구조</h2>
+      <p>문제는 <code>market_db</code> 데이터베이스의 <code>member</code>, <code>buy</code> 테이블을 기준으로 합니다.</p>
+      <div class="grid two">
+        <div>
+          <h4>member 테이블</h4>
+          <table class="schema">
+            <thead><tr><th>컬럼명</th><th>의미</th></tr></thead>
+            <tbody>
+              <tr><td><code>mem_id</code></td><td>회원 ID, buy 테이블과 연결되는 값</td></tr>
+              <tr><td><code>mem_name</code></td><td>그룹 이름</td></tr>
+              <tr><td><code>mem_number</code></td><td>그룹 인원수</td></tr>
+              <tr><td><code>addr</code></td><td>지역</td></tr>
+              <tr><td><code>phone1</code></td><td>전화번호 국번</td></tr>
+              <tr><td><code>phone2</code></td><td>전화번호 뒷자리</td></tr>
+              <tr><td><code>height</code></td><td>평균키</td></tr>
+              <tr><td><code>debut_date</code></td><td>데뷔일</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h4>buy 테이블</h4>
+          <table class="schema">
+            <thead><tr><th>컬럼명</th><th>의미</th></tr></thead>
+            <tbody>
+              <tr><td><code>num</code></td><td>구매 번호</td></tr>
+              <tr><td><code>mem_id</code></td><td>구매한 회원 ID</td></tr>
+              <tr><td><code>prod_name</code></td><td>상품 이름</td></tr>
+              <tr><td><code>group_name</code></td><td>상품 분류</td></tr>
+              <tr><td><code>price</code></td><td>가격</td></tr>
+              <tr><td><code>amount</code></td><td>수량</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>서브쿼리 핵심 개념</h2>
+      <p><strong>서브쿼리</strong>는 SQL문 안에 들어 있는 또 다른 <code>SELECT</code>문입니다. 보통 괄호 <code>( )</code> 안에 작성합니다.</p>
+      <div class="flow">
+        <div><strong>1단계</strong>괄호 안쪽 <code>SELECT</code>가 먼저 실행됩니다.</div>
+        <div><strong>2단계</strong>서브쿼리 결과가 바깥쪽 <code>WHERE</code> 조건에 들어갑니다.</div>
+        <div><strong>3단계</strong>조건을 만족하는 행만 최종 조회됩니다.</div>
+      </div>
+      <div class="box soft">
+        <h4><code>=</code>와 <code>IN</code>의 차이</h4>
+        <table>
+          <thead><tr><th>문법</th><th>사용 상황</th><th>예시 의미</th></tr></thead>
+          <tbody>
+            <tr><td><code>=</code></td><td>서브쿼리 결과가 1개일 때</td><td>트와이스의 지역 하나와 같은 지역</td></tr>
+            <tr><td><code>IN</code></td><td>서브쿼리 결과가 여러 개일 수 있을 때</td><td>디지털 상품을 구매한 여러 회원 ID 중 하나</td></tr>
+            <tr><td><code>NOT IN</code></td><td>서브쿼리 결과 목록에 포함되지 않는 데이터를 찾을 때</td><td>구매 기록이 있는 회원 ID 목록에 없는 회원</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="warning">
+        <strong>자주 나는 오류</strong>
+        <p><code>=</code> 뒤의 서브쿼리 결과가 2개 이상 나오면 오류가 날 수 있습니다. 결과가 여러 개 나올 가능성이 있으면 <code>IN</code>을 사용합니다.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>문제 바로가기</h2>
+      <div class="toc">
+        <a href="#q1">1번 · 기본 비교 서브쿼리</a><a href="#q2">2번 · 숫자 비교 서브쿼리</a><a href="#q3">3번 · 날짜 비교 서브쿼리</a><a href="#q4">4번 · 문자 비교 서브쿼리</a><a href="#q5">5번 · IN 서브쿼리</a><a href="#q6">6번 · NOT IN 서브쿼리</a><a href="#q7">7번 · 중첩 서브쿼리</a><a href="#q8">8번 · 분류 기준 IN 서브쿼리</a><a href="#q9">9번 · 3단계 중첩 서브쿼리</a><a href="#q10">10번 · 조건 2개 + 서브쿼리 2개</a>
+      </div>
+    </section>
+
+    
+    <section class="problem" id="q1">
+      <div class="problem-head">
+        <span class="qno">1번</span>
+        <span class="level">기본 비교 서브쿼리</span>
+      </div>
+      <h3><code>트와이스<code>와 같은 지역에 사는 그룹의 이름, 지역, 평균키를 조회하시오.</h3>
+      <p class="concept">한 그룹의 지역 값을 먼저 구한 뒤, 그 지역과 같은 회원을 찾는 문제입니다.</p>
+
+      <div class="box soft">
+        <h4>① 먼저 생각할 순서</h4>
+        <ol><li>먼저 트와이스가 어느 지역에 사는지 찾아야 합니다.</li><li>그 결과로 나온 지역 값을 바깥쪽 SELECT문의 WHERE 조건에서 사용합니다.</li><li>지역은 한 그룹당 하나만 나오므로 = 비교 연산자를 사용할 수 있습니다.</li></ol>
+      </div>
+
+      <div class="grid two">
+        <div class="box">
+          <h4>② 서브쿼리만 먼저 실행해보기</h4>
+          <pre><code>SELECT addr
+FROM member
+WHERE mem_name = &#x27;트와이스&#x27;;</code></pre>
+        </div>
+        <div class="box answer">
+          <h4>③ 서브쿼리 결과 해석</h4>
+          <p>서울</p>
+          <p class="small">이 결과가 바깥쪽 SQL문의 조건값으로 들어갑니다.</p>
+        </div>
+      </div>
+
+      <div class="box final-sql">
+        <h4>④ 최종 풀이 SQL</h4>
+        <pre><code>SELECT mem_name, addr, height
+FROM member
+WHERE addr = (
+    SELECT addr
+    FROM member
+    WHERE mem_name = &#x27;트와이스&#x27;
+);</code></pre>
+      </div>
+
+      <div class="box">
+        <h4>⑤ 줄별 설명</h4>
+        <table class="explain"><thead><tr><th>SQL 부분</th><th>설명</th></tr></thead><tbody><tr><td><code>SELECT mem_name, addr, height</code></td><td>최종 화면에 그룹 이름, 지역, 평균키를 보여줍니다.</td></tr><tr><td><code>FROM member</code></td><td>회원 정보가 들어 있는 member 테이블에서 조회합니다.</td></tr><tr><td><code>WHERE addr = (...)</code></td><td>지역이 서브쿼리 결과와 같은 행만 남깁니다.</td></tr><tr><td><code>SELECT addr FROM member WHERE mem_name = &#x27;트와이스&#x27;</code></td><td>트와이스의 지역을 먼저 구합니다.</td></tr></tbody></table>
+      </div>
+
+      <div class="box result-box">
+        <h4>⑥ 예상 결과 예시</h4>
+        <p class="small">DB 도구에 따라 출력 순서는 다를 수 있습니다.</p>
+        <div class="result-wrap"><table class="result"><thead><tr><th>mem_name</th><th>addr</th><th>height</th></tr></thead><tbody><tr><td>트와이스</td><td>서울</td><td>167</td></tr><tr><td>오마이걸</td><td>서울</td><td>160</td></tr><tr><td>소녀시대</td><td>서울</td><td>168</td></tr><tr><td>우주소녀</td><td>서울</td><td>162</td></tr></tbody></table></div>
+      </div>
+
+      <div class="teacher-note">
+        <strong>강의 멘트</strong>
+        <p>학생에게는 ‘트와이스의 addr 값을 먼저 구하고, 그 값이 서울이면 addr이 서울인 그룹을 다시 찾는다’고 설명하면 좋습니다.</p>
+      </div>
+    </section>
+    
+    <section class="problem" id="q2">
+      <div class="problem-head">
+        <span class="qno">2번</span>
+        <span class="level">숫자 비교 서브쿼리</span>
+      </div>
+      <h3><code>트와이스<code>보다 평균키가 큰 그룹의 이름과 평균키를 조회하시오.</h3>
+      <p class="concept">서브쿼리로 기준 숫자 하나를 구한 뒤, 바깥쪽 쿼리에서 `&gt;` 연산자로 비교하는 문제입니다.</p>
+
+      <div class="box soft">
+        <h4>① 먼저 생각할 순서</h4>
+        <ol><li>먼저 트와이스의 평균키를 조회합니다.</li><li>그 키보다 큰 그룹만 바깥쪽 쿼리에서 조회합니다.</li><li>트와이스의 키는 하나만 나오기 때문에 &gt; 비교가 가능합니다.</li></ol>
+      </div>
+
+      <div class="grid two">
+        <div class="box">
+          <h4>② 서브쿼리만 먼저 실행해보기</h4>
+          <pre><code>SELECT height
+FROM member
+WHERE mem_name = &#x27;트와이스&#x27;;</code></pre>
+        </div>
+        <div class="box answer">
+          <h4>③ 서브쿼리 결과 해석</h4>
+          <p>167</p>
+          <p class="small">이 결과가 바깥쪽 SQL문의 조건값으로 들어갑니다.</p>
+        </div>
+      </div>
+
+      <div class="box final-sql">
+        <h4>④ 최종 풀이 SQL</h4>
+        <pre><code>SELECT mem_name, height
+FROM member
+WHERE height &gt; (
+    SELECT height
+    FROM member
+    WHERE mem_name = &#x27;트와이스&#x27;
+);</code></pre>
+      </div>
+
+      <div class="box">
+        <h4>⑤ 줄별 설명</h4>
+        <table class="explain"><thead><tr><th>SQL 부분</th><th>설명</th></tr></thead><tbody><tr><td><code>SELECT mem_name, height</code></td><td>그룹 이름과 평균키만 출력합니다.</td></tr><tr><td><code>WHERE height &gt; (...)</code></td><td>평균키가 서브쿼리 결과보다 큰 행만 조회합니다.</td></tr><tr><td><code>SELECT height FROM member WHERE mem_name = &#x27;트와이스&#x27;</code></td><td>트와이스의 평균키 167을 먼저 구합니다.</td></tr></tbody></table>
+      </div>
+
+      <div class="box result-box">
+        <h4>⑥ 예상 결과 예시</h4>
+        <p class="small">DB 도구에 따라 출력 순서는 다를 수 있습니다.</p>
+        <div class="result-wrap"><table class="result"><thead><tr><th>mem_name</th><th>height</th></tr></thead><tbody><tr><td>소녀시대</td><td>168</td></tr></tbody></table></div>
+      </div>
+
+      <div class="teacher-note">
+        <strong>강의 멘트</strong>
+        <p>여기서 `이상`과 `초과`를 구분해 주세요. 문제는 ‘큰’이므로 `&gt;`이고, ‘크거나 같은’이면 `&gt;=`입니다.</p>
+      </div>
+    </section>
+    
+    <section class="problem" id="q3">
+      <div class="problem-head">
+        <span class="qno">3번</span>
+        <span class="level">날짜 비교 서브쿼리</span>
+      </div>
+      <h3><code>소녀시대<code>보다 늦게 데뷔한 그룹의 이름과 데뷔일을 조회하시오.</h3>
+      <p class="concept">날짜도 숫자처럼 비교할 수 있습니다. 더 뒤의 날짜는 더 늦은 날짜로 판단합니다.</p>
+
+      <div class="box soft">
+        <h4>① 먼저 생각할 순서</h4>
+        <ol><li>먼저 소녀시대의 데뷔일을 조회합니다.</li><li>그 데뷔일보다 큰 날짜를 가진 그룹을 찾습니다.</li><li>날짜 비교에서는 &gt;가 ‘더 늦은 날짜’를 의미합니다.</li></ol>
+      </div>
+
+      <div class="grid two">
+        <div class="box">
+          <h4>② 서브쿼리만 먼저 실행해보기</h4>
+          <pre><code>SELECT debut_date
+FROM member
+WHERE mem_name = &#x27;소녀시대&#x27;;</code></pre>
+        </div>
+        <div class="box answer">
+          <h4>③ 서브쿼리 결과 해석</h4>
+          <p>2007-08-02</p>
+          <p class="small">이 결과가 바깥쪽 SQL문의 조건값으로 들어갑니다.</p>
+        </div>
+      </div>
+
+      <div class="box final-sql">
+        <h4>④ 최종 풀이 SQL</h4>
+        <pre><code>SELECT mem_name, debut_date
+FROM member
+WHERE debut_date &gt; (
+    SELECT debut_date
+    FROM member
+    WHERE mem_name = &#x27;소녀시대&#x27;
+);</code></pre>
+      </div>
+
+      <div class="box">
+        <h4>⑤ 줄별 설명</h4>
+        <table class="explain"><thead><tr><th>SQL 부분</th><th>설명</th></tr></thead><tbody><tr><td><code>SELECT mem_name, debut_date</code></td><td>그룹 이름과 데뷔일을 출력합니다.</td></tr><tr><td><code>WHERE debut_date &gt; (...)</code></td><td>서브쿼리로 구한 데뷔일보다 늦게 데뷔한 그룹만 남깁니다.</td></tr><tr><td><code>SELECT debut_date FROM member WHERE mem_name = &#x27;소녀시대&#x27;</code></td><td>소녀시대의 데뷔일을 기준값으로 가져옵니다.</td></tr></tbody></table>
+      </div>
+
+      <div class="box result-box">
+        <h4>⑥ 예상 결과 예시</h4>
+        <p class="small">DB 도구에 따라 출력 순서는 다를 수 있습니다.</p>
+        <div class="result-wrap"><table class="result"><thead><tr><th>mem_name</th><th>debut_date</th></tr></thead><tbody><tr><td>트와이스</td><td>2015-10-19</td></tr><tr><td>블랙핑크</td><td>2016-08-08</td></tr><tr><td>여자친구</td><td>2015-01-15</td></tr><tr><td>오마이걸</td><td>2015-04-21</td></tr><tr><td>잇지</td><td>2019-02-12</td></tr><tr><td>레드벨벳</td><td>2014-08-01</td></tr><tr><td>에이핑크</td><td>2011-02-10</td></tr><tr><td>우주소녀</td><td>2016-02-25</td></tr><tr><td>마마무</td><td>2014-06-19</td></tr></tbody></table></div>
+      </div>
+
+      <div class="teacher-note">
+        <strong>강의 멘트</strong>
+        <p>날짜 비교를 어려워하면 ‘2016년은 2007년보다 뒤이므로 더 크다’처럼 연도부터 비교하게 해주면 이해가 쉽습니다.</p>
+      </div>
+    </section>
+    
+    <section class="problem" id="q4">
+      <div class="problem-head">
+        <span class="qno">4번</span>
+        <span class="level">문자 비교 서브쿼리</span>
+      </div>
+      <h3><code>에이핑크<code>와 같은 전화 국번을 가진 그룹의 이름, 전화 국번, 전화번호 뒷자리를 조회하시오.</h3>
+      <p class="concept">문자 데이터도 `=`로 비교할 수 있습니다. 전화 국번은 `phone1` 컬럼에 저장되어 있습니다.</p>
+
+      <div class="box soft">
+        <h4>① 먼저 생각할 순서</h4>
+        <ol><li>먼저 에이핑크의 전화 국번 phone1 값을 찾습니다.</li><li>그 값과 같은 phone1을 가진 그룹을 조회합니다.</li><li>전화 국번은 문자처럼 저장되어 있으므로 따옴표가 붙은 값이라고 생각하면 됩니다.</li></ol>
+      </div>
+
+      <div class="grid two">
+        <div class="box">
+          <h4>② 서브쿼리만 먼저 실행해보기</h4>
+          <pre><code>SELECT phone1
+FROM member
+WHERE mem_name = &#x27;에이핑크&#x27;;</code></pre>
+        </div>
+        <div class="box answer">
+          <h4>③ 서브쿼리 결과 해석</h4>
+          <p>031</p>
+          <p class="small">이 결과가 바깥쪽 SQL문의 조건값으로 들어갑니다.</p>
+        </div>
+      </div>
+
+      <div class="box final-sql">
+        <h4>④ 최종 풀이 SQL</h4>
+        <pre><code>SELECT mem_name, phone1, phone2
+FROM member
+WHERE phone1 = (
+    SELECT phone1
+    FROM member
+    WHERE mem_name = &#x27;에이핑크&#x27;
+);</code></pre>
+      </div>
+
+      <div class="box">
+        <h4>⑤ 줄별 설명</h4>
+        <table class="explain"><thead><tr><th>SQL 부분</th><th>설명</th></tr></thead><tbody><tr><td><code>SELECT mem_name, phone1, phone2</code></td><td>그룹 이름, 전화 국번, 전화번호 뒷자리를 출력합니다.</td></tr><tr><td><code>WHERE phone1 = (...)</code></td><td>전화 국번이 서브쿼리 결과와 같은 그룹만 조회합니다.</td></tr><tr><td><code>SELECT phone1 FROM member WHERE mem_name = &#x27;에이핑크&#x27;</code></td><td>에이핑크의 전화 국번 031을 먼저 찾습니다.</td></tr></tbody></table>
+      </div>
+
+      <div class="box result-box">
+        <h4>⑥ 예상 결과 예시</h4>
+        <p class="small">DB 도구에 따라 출력 순서는 다를 수 있습니다.</p>
+        <div class="result-wrap"><table class="result"><thead><tr><th>mem_name</th><th>phone1</th><th>phone2</th></tr></thead><tbody><tr><td>여자친구</td><td>031</td><td>33333333</td></tr><tr><td>에이핑크</td><td>031</td><td>77777777</td></tr></tbody></table></div>
+      </div>
+
+      <div class="teacher-note">
+        <strong>강의 멘트</strong>
+        <p>학생들이 전화번호를 숫자로 생각할 수 있는데, 전화번호는 계산 대상이 아니므로 보통 문자 데이터로 다룹니다.</p>
+      </div>
+    </section>
+    
+    <section class="problem" id="q5">
+      <div class="problem-head">
+        <span class="qno">5번</span>
+        <span class="level">IN 서브쿼리</span>
+      </div>
+      <h3><code>디지털<code> 상품을 구매한 적이 있는 그룹의 모든 회원 정보를 조회하시오.</h3>
+      <p class="concept">서브쿼리 결과가 여러 개 나올 수 있으므로 `=`가 아니라 `IN`을 사용해야 하는 문제입니다.</p>
+
+      <div class="box soft">
+        <h4>① 먼저 생각할 순서</h4>
+        <ol><li>먼저 buy 테이블에서 디지털 상품을 구매한 회원 ID들을 찾습니다.</li><li>디지털 상품을 구매한 회원은 여러 명일 수 있습니다.</li><li>여러 개의 ID 목록 중 하나에 해당하는 회원을 찾아야 하므로 IN을 사용합니다.</li></ol>
+      </div>
+
+      <div class="grid two">
+        <div class="box">
+          <h4>② 서브쿼리만 먼저 실행해보기</h4>
+          <pre><code>SELECT mem_id
+FROM buy
+WHERE group_name = &#x27;디지털&#x27;;</code></pre>
+        </div>
+        <div class="box answer">
+          <h4>③ 서브쿼리 결과 해석</h4>
+          <p>BLK, APN, MMU 등이 나올 수 있음</p>
+          <p class="small">이 결과가 바깥쪽 SQL문의 조건값으로 들어갑니다.</p>
+        </div>
+      </div>
+
+      <div class="box final-sql">
+        <h4>④ 최종 풀이 SQL</h4>
+        <pre><code>SELECT *
+FROM member
+WHERE mem_id IN (
+    SELECT mem_id
+    FROM buy
+    WHERE group_name = &#x27;디지털&#x27;
+);</code></pre>
+      </div>
+
+      <div class="box">
+        <h4>⑤ 줄별 설명</h4>
+        <table class="explain"><thead><tr><th>SQL 부분</th><th>설명</th></tr></thead><tbody><tr><td><code>SELECT * FROM member</code></td><td>member 테이블의 모든 열 정보를 출력합니다.</td></tr><tr><td><code>WHERE mem_id IN (...)</code></td><td>회원 ID가 서브쿼리 결과 목록 안에 있는지 확인합니다.</td></tr><tr><td><code>SELECT mem_id FROM buy WHERE group_name = &#x27;디지털&#x27;</code></td><td>디지털 상품을 구매한 회원 ID 목록을 먼저 만듭니다.</td></tr></tbody></table>
+      </div>
+
+      <div class="box result-box">
+        <h4>⑥ 예상 결과 예시</h4>
+        <p class="small">DB 도구에 따라 출력 순서는 다를 수 있습니다.</p>
+        <div class="result-wrap"><table class="result"><thead><tr><th>mem_id</th><th>mem_name</th><th>addr</th></tr></thead><tbody><tr><td>BLK</td><td>블랙핑크</td><td>경남</td></tr><tr><td>APN</td><td>에이핑크</td><td>경기</td></tr><tr><td>MMU</td><td>마마무</td><td>전남</td></tr></tbody></table></div>
+      </div>
+
+      <div class="teacher-note">
+        <strong>강의 멘트</strong>
+        <p>여기서 핵심은 `=`와 `IN`의 차이입니다. 서브쿼리 결과가 여러 개일 수 있으면 `IN`을 쓰는 습관을 들이게 해주세요.</p>
+      </div>
+    </section>
+    
+    <section class="problem" id="q6">
+      <div class="problem-head">
+        <span class="qno">6번</span>
+        <span class="level">NOT IN 서브쿼리</span>
+      </div>
+      <h3><code>디지털<code> 상품을 구매한 적이 없는 그룹의 아이디와 그룹 이름을 조회하시오.</h3>
+      <p class="concept">5번의 반대 문제입니다. 목록 안에 포함되지 않은 데이터를 찾을 때 `NOT IN`을 사용합니다.</p>
+
+      <div class="box soft">
+        <h4>① 먼저 생각할 순서</h4>
+        <ol><li>먼저 디지털 상품을 구매한 회원 ID 목록을 만듭니다.</li><li>그 목록에 들어 있지 않은 회원을 member 테이블에서 찾습니다.</li><li>‘없는’, ‘하지 않은’, ‘제외한’이라는 말이 나오면 NOT IN을 생각할 수 있습니다.</li></ol>
+      </div>
+
+      <div class="grid two">
+        <div class="box">
+          <h4>② 서브쿼리만 먼저 실행해보기</h4>
+          <pre><code>SELECT mem_id
+FROM buy
+WHERE group_name = &#x27;디지털&#x27;;</code></pre>
+        </div>
+        <div class="box answer">
+          <h4>③ 서브쿼리 결과 해석</h4>
+          <p>BLK, APN, MMU 등이 나올 수 있음</p>
+          <p class="small">이 결과가 바깥쪽 SQL문의 조건값으로 들어갑니다.</p>
+        </div>
+      </div>
+
+      <div class="box final-sql">
+        <h4>④ 최종 풀이 SQL</h4>
+        <pre><code>SELECT mem_id, mem_name
+FROM member
+WHERE mem_id NOT IN (
+    SELECT mem_id
+    FROM buy
+    WHERE group_name = &#x27;디지털&#x27;
+);</code></pre>
+      </div>
+
+      <div class="box">
+        <h4>⑤ 줄별 설명</h4>
+        <table class="explain"><thead><tr><th>SQL 부분</th><th>설명</th></tr></thead><tbody><tr><td><code>SELECT mem_id, mem_name</code></td><td>회원 ID와 그룹 이름만 출력합니다.</td></tr><tr><td><code>WHERE mem_id NOT IN (...)</code></td><td>서브쿼리 결과 목록에 없는 회원만 조회합니다.</td></tr><tr><td><code>SELECT mem_id FROM buy WHERE group_name = &#x27;디지털&#x27;</code></td><td>디지털 상품을 구매한 회원 ID 목록을 먼저 구합니다.</td></tr></tbody></table>
+      </div>
+
+      <div class="box result-box">
+        <h4>⑥ 예상 결과 예시</h4>
+        <p class="small">DB 도구에 따라 출력 순서는 다를 수 있습니다.</p>
+        <div class="result-wrap"><table class="result"><thead><tr><th>mem_id</th><th>mem_name</th></tr></thead><tbody><tr><td>TWC</td><td>트와이스</td></tr><tr><td>WMN</td><td>여자친구</td></tr><tr><td>OMY</td><td>오마이걸</td></tr><tr><td>GRL</td><td>소녀시대</td></tr><tr><td>ITZ</td><td>잇지</td></tr><tr><td>RED</td><td>레드벨벳</td></tr><tr><td>SPC</td><td>우주소녀</td></tr></tbody></table></div>
+      </div>
+
+      <div class="teacher-note">
+        <strong>강의 멘트</strong>
+        <p>`IN`은 포함, `NOT IN`은 제외라고 짧게 정리해주면 좋습니다.</p>
+      </div>
+    </section>
+    
+    <section class="problem" id="q7">
+      <div class="problem-head">
+        <span class="qno">7번</span>
+        <span class="level">중첩 서브쿼리</span>
+      </div>
+      <h3><code>에이핑크<code>가 구매한 상품과 같은 상품을 구매한 모든 구매 내역을 조회하시오.</h3>
+      <p class="concept">회원 이름에서 회원 ID를 찾고, 그 ID로 구매 상품명을 찾고, 같은 상품명을 가진 구매 내역을 다시 찾는 문제입니다.</p>
+
+      <div class="box soft">
+        <h4>① 먼저 생각할 순서</h4>
+        <ol><li>buy 테이블에는 그룹 이름이 없고 mem_id만 있습니다.</li><li>따라서 먼저 member 테이블에서 에이핑크의 mem_id를 찾아야 합니다.</li><li>그 다음 buy 테이블에서 에이핑크가 구매한 상품명을 찾습니다.</li><li>마지막으로 같은 상품명을 가진 모든 구매 내역을 조회합니다.</li></ol>
+      </div>
+
+      <div class="grid two">
+        <div class="box">
+          <h4>② 서브쿼리만 먼저 실행해보기</h4>
+          <pre><code>SELECT mem_id
+FROM member
+WHERE mem_name = &#x27;에이핑크&#x27;;
+
+SELECT prod_name
+FROM buy
+WHERE mem_id = &#x27;APN&#x27;;</code></pre>
+        </div>
+        <div class="box answer">
+          <h4>③ 서브쿼리 결과 해석</h4>
+          <p>APN → 아이폰, 혼공SQL, 청바지</p>
+          <p class="small">이 결과가 바깥쪽 SQL문의 조건값으로 들어갑니다.</p>
+        </div>
+      </div>
+
+      <div class="box final-sql">
+        <h4>④ 최종 풀이 SQL</h4>
+        <pre><code>SELECT *
+FROM buy
+WHERE prod_name IN (
+    SELECT prod_name
+    FROM buy
+    WHERE mem_id = (
+        SELECT mem_id
+        FROM member
+        WHERE mem_name = &#x27;에이핑크&#x27;
+    )
+);</code></pre>
+      </div>
+
+      <div class="box">
+        <h4>⑤ 줄별 설명</h4>
+        <table class="explain"><thead><tr><th>SQL 부분</th><th>설명</th></tr></thead><tbody><tr><td><code>SELECT mem_id FROM member WHERE mem_name = &#x27;에이핑크&#x27;</code></td><td>에이핑크의 회원 ID인 APN을 먼저 찾습니다.</td></tr><tr><td><code>SELECT prod_name FROM buy WHERE mem_id = (...)</code></td><td>APN이 구매한 상품명 목록을 찾습니다.</td></tr><tr><td><code>WHERE prod_name IN (...)</code></td><td>그 상품명 목록에 포함되는 모든 구매 내역을 조회합니다.</td></tr></tbody></table>
+      </div>
+
+      <div class="box result-box">
+        <h4>⑥ 예상 결과 예시</h4>
+        <p class="small">DB 도구에 따라 출력 순서는 다를 수 있습니다.</p>
+        <div class="result-wrap"><table class="result"><thead><tr><th>mem_id</th><th>prod_name</th><th>group_name</th></tr></thead><tbody><tr><td>APN</td><td>아이폰</td><td>디지털</td></tr><tr><td>MMU</td><td>아이폰</td><td>디지털</td></tr><tr><td>BLK</td><td>청바지</td><td>패션</td></tr><tr><td>GRL</td><td>혼공SQL</td><td>서적</td></tr><tr><td>APN</td><td>혼공SQL</td><td>서적</td></tr><tr><td>APN</td><td>청바지</td><td>패션</td></tr><tr><td>APN</td><td>혼공SQL</td><td>서적</td></tr></tbody></table></div>
+      </div>
+
+      <div class="teacher-note">
+        <strong>강의 멘트</strong>
+        <p>이 문제는 안쪽에서 바깥쪽으로 읽는 연습이 중요합니다. ‘에이핑크 ID 찾기 → 에이핑크 상품 찾기 → 같은 상품 구매 내역 찾기’ 순서입니다.</p>
+      </div>
+    </section>
+    
+    <section class="problem" id="q8">
+      <div class="problem-head">
+        <span class="qno">8번</span>
+        <span class="level">분류 기준 IN 서브쿼리</span>
+      </div>
+      <h3><code>에이핑크<code>가 구매한 상품 분류와 같은 분류의 구매 내역을 조회하시오.</h3>
+      <p class="concept">상품명 자체가 아니라 상품 분류를 기준으로 같은 종류의 구매 내역을 찾는 문제입니다.</p>
+
+      <div class="box soft">
+        <h4>① 먼저 생각할 순서</h4>
+        <ol><li>먼저 에이핑크의 mem_id를 찾습니다.</li><li>그 ID로 에이핑크가 구매한 상품들의 group_name을 찾습니다.</li><li>그 분류와 같은 분류에 속하는 전체 구매 내역을 조회합니다.</li></ol>
+      </div>
+
+      <div class="grid two">
+        <div class="box">
+          <h4>② 서브쿼리만 먼저 실행해보기</h4>
+          <pre><code>SELECT group_name
+FROM buy
+WHERE mem_id = (
+    SELECT mem_id
+    FROM member
+    WHERE mem_name = &#x27;에이핑크&#x27;
+);</code></pre>
+        </div>
+        <div class="box answer">
+          <h4>③ 서브쿼리 결과 해석</h4>
+          <p>디지털, 서적, 패션</p>
+          <p class="small">이 결과가 바깥쪽 SQL문의 조건값으로 들어갑니다.</p>
+        </div>
+      </div>
+
+      <div class="box final-sql">
+        <h4>④ 최종 풀이 SQL</h4>
+        <pre><code>SELECT prod_name, group_name, price, amount
+FROM buy
+WHERE group_name IN (
+    SELECT group_name
+    FROM buy
+    WHERE mem_id = (
+        SELECT mem_id
+        FROM member
+        WHERE mem_name = &#x27;에이핑크&#x27;
+    )
+);</code></pre>
+      </div>
+
+      <div class="box">
+        <h4>⑤ 줄별 설명</h4>
+        <table class="explain"><thead><tr><th>SQL 부분</th><th>설명</th></tr></thead><tbody><tr><td><code>SELECT mem_id FROM member WHERE mem_name = &#x27;에이핑크&#x27;</code></td><td>에이핑크의 ID를 찾습니다.</td></tr><tr><td><code>SELECT group_name FROM buy WHERE mem_id = (...)</code></td><td>에이핑크가 구매한 상품들의 분류를 찾습니다.</td></tr><tr><td><code>WHERE group_name IN (...)</code></td><td>그 분류에 해당하는 구매 내역만 조회합니다.</td></tr></tbody></table>
+      </div>
+
+      <div class="box result-box">
+        <h4>⑥ 예상 결과 예시</h4>
+        <p class="small">DB 도구에 따라 출력 순서는 다를 수 있습니다.</p>
+        <div class="result-wrap"><table class="result"><thead><tr><th>prod_name</th><th>group_name</th><th>price</th><th>amount</th></tr></thead><tbody><tr><td>맥북프로</td><td>디지털</td><td>1000</td><td>1</td></tr><tr><td>아이폰</td><td>디지털</td><td>200</td><td>1</td></tr><tr><td>아이폰</td><td>디지털</td><td>200</td><td>5</td></tr><tr><td>청바지</td><td>패션</td><td>50</td><td>3</td></tr><tr><td>에어팟</td><td>디지털</td><td>80</td><td>10</td></tr><tr><td>혼공SQL</td><td>서적</td><td>15</td><td>5</td></tr><tr><td>혼공SQL</td><td>서적</td><td>15</td><td>2</td></tr><tr><td>청바지</td><td>패션</td><td>50</td><td>1</td></tr><tr><td>혼공SQL</td><td>서적</td><td>15</td><td>1</td></tr></tbody></table></div>
+      </div>
+
+      <div class="teacher-note">
+        <strong>강의 멘트</strong>
+        <p>7번은 상품명 기준, 8번은 분류 기준입니다. 둘의 차이를 비교해서 설명하면 학생들이 조건 기준을 잡는 연습을 할 수 있습니다.</p>
+      </div>
+    </section>
+    
+    <section class="problem" id="q9">
+      <div class="problem-head">
+        <span class="qno">9번</span>
+        <span class="level">3단계 중첩 서브쿼리</span>
+      </div>
+      <h3><code>청바지<code>를 구매한 그룹과 같은 지역에 사는 그룹의 이름과 지역을 조회하시오.</h3>
+      <p class="concept">상품명 → 구매한 회원 ID → 그 회원의 지역 → 같은 지역 회원 조회 순서로 진행되는 문제입니다.</p>
+
+      <div class="box soft">
+        <h4>① 먼저 생각할 순서</h4>
+        <ol><li>먼저 buy 테이블에서 청바지를 구매한 회원 ID를 찾습니다.</li><li>그 회원 ID들을 member 테이블에서 찾아 지역을 구합니다.</li><li>마지막으로 그 지역에 사는 모든 그룹을 조회합니다.</li><li>청바지를 구매한 그룹이 여러 명일 수 있으므로 IN이 필요합니다.</li></ol>
+      </div>
+
+      <div class="grid two">
+        <div class="box">
+          <h4>② 서브쿼리만 먼저 실행해보기</h4>
+          <pre><code>SELECT mem_id
+FROM buy
+WHERE prod_name = &#x27;청바지&#x27;;
+
+SELECT addr
+FROM member
+WHERE mem_id IN (&#x27;BLK&#x27;, &#x27;APN&#x27;);</code></pre>
+        </div>
+        <div class="box answer">
+          <h4>③ 서브쿼리 결과 해석</h4>
+          <p>BLK, APN → 경남, 경기</p>
+          <p class="small">이 결과가 바깥쪽 SQL문의 조건값으로 들어갑니다.</p>
+        </div>
+      </div>
+
+      <div class="box final-sql">
+        <h4>④ 최종 풀이 SQL</h4>
+        <pre><code>SELECT mem_name, addr
+FROM member
+WHERE addr IN (
+    SELECT addr
+    FROM member
+    WHERE mem_id IN (
+        SELECT mem_id
+        FROM buy
+        WHERE prod_name = &#x27;청바지&#x27;
+    )
+);</code></pre>
+      </div>
+
+      <div class="box">
+        <h4>⑤ 줄별 설명</h4>
+        <table class="explain"><thead><tr><th>SQL 부분</th><th>설명</th></tr></thead><tbody><tr><td><code>SELECT mem_id FROM buy WHERE prod_name = &#x27;청바지&#x27;</code></td><td>청바지를 구매한 회원 ID를 찾습니다.</td></tr><tr><td><code>SELECT addr FROM member WHERE mem_id IN (...)</code></td><td>그 회원들이 사는 지역을 찾습니다.</td></tr><tr><td><code>WHERE addr IN (...)</code></td><td>그 지역에 사는 모든 그룹을 조회합니다.</td></tr></tbody></table>
+      </div>
+
+      <div class="box result-box">
+        <h4>⑥ 예상 결과 예시</h4>
+        <p class="small">DB 도구에 따라 출력 순서는 다를 수 있습니다.</p>
+        <div class="result-wrap"><table class="result"><thead><tr><th>mem_name</th><th>addr</th></tr></thead><tbody><tr><td>블랙핑크</td><td>경남</td></tr><tr><td>여자친구</td><td>경기</td></tr><tr><td>잇지</td><td>경남</td></tr><tr><td>에이핑크</td><td>경기</td></tr></tbody></table></div>
+      </div>
+
+      <div class="teacher-note">
+        <strong>강의 멘트</strong>
+        <p>이 문제는 ‘청바지’라는 상품에서 바로 지역을 찾을 수 없기 때문에, 중간에 `mem_id`를 거쳐야 한다는 점을 강조해 주세요.</p>
+      </div>
+    </section>
+    
+    <section class="problem" id="q10">
+      <div class="problem-head">
+        <span class="qno">10번</span>
+        <span class="level">조건 2개 + 서브쿼리 2개</span>
+      </div>
+      <h3><code>블랙핑크<code>보다 인원수가 많고, 구매 기록이 없는 그룹의 이름과 인원수를 조회하시오.</h3>
+      <p class="concept">하나의 SQL에서 두 가지 조건을 동시에 검사하는 문제입니다. 숫자 비교 서브쿼리와 `NOT IN` 서브쿼리를 함께 사용합니다.</p>
+
+      <div class="box soft">
+        <h4>① 먼저 생각할 순서</h4>
+        <ol><li>첫 번째 조건은 블랙핑크보다 인원수가 많아야 한다는 것입니다.</li><li>두 번째 조건은 buy 테이블에 구매 기록이 없어야 한다는 것입니다.</li><li>두 조건을 모두 만족해야 하므로 AND로 연결합니다.</li></ol>
+      </div>
+
+      <div class="grid two">
+        <div class="box">
+          <h4>② 서브쿼리만 먼저 실행해보기</h4>
+          <pre><code>SELECT mem_number
+FROM member
+WHERE mem_name = &#x27;블랙핑크&#x27;;
+
+SELECT mem_id
+FROM buy;</code></pre>
+        </div>
+        <div class="box answer">
+          <h4>③ 서브쿼리 결과 해석</h4>
+          <p>블랙핑크 인원수 4 / 구매 기록이 있는 mem_id 목록</p>
+          <p class="small">이 결과가 바깥쪽 SQL문의 조건값으로 들어갑니다.</p>
+        </div>
+      </div>
+
+      <div class="box final-sql">
+        <h4>④ 최종 풀이 SQL</h4>
+        <pre><code>SELECT mem_name, mem_number
+FROM member
+WHERE mem_number &gt; (
+    SELECT mem_number
+    FROM member
+    WHERE mem_name = &#x27;블랙핑크&#x27;
+)
+AND mem_id NOT IN (
+    SELECT mem_id
+    FROM buy
+);</code></pre>
+      </div>
+
+      <div class="box">
+        <h4>⑤ 줄별 설명</h4>
+        <table class="explain"><thead><tr><th>SQL 부분</th><th>설명</th></tr></thead><tbody><tr><td><code>WHERE mem_number &gt; (...)</code></td><td>블랙핑크 인원수보다 큰 그룹만 남깁니다.</td></tr><tr><td><code>SELECT mem_number FROM member WHERE mem_name = &#x27;블랙핑크&#x27;</code></td><td>블랙핑크의 인원수 4를 구합니다.</td></tr><tr><td><code>AND mem_id NOT IN (...)</code></td><td>구매 기록이 있는 회원 ID 목록에 포함되지 않은 그룹만 남깁니다.</td></tr><tr><td><code>SELECT mem_id FROM buy</code></td><td>구매 기록이 있는 회원 ID 목록을 만듭니다.</td></tr></tbody></table>
+      </div>
+
+      <div class="box result-box">
+        <h4>⑥ 예상 결과 예시</h4>
+        <p class="small">DB 도구에 따라 출력 순서는 다를 수 있습니다.</p>
+        <div class="result-wrap"><table class="result"><thead><tr><th>mem_name</th><th>mem_number</th></tr></thead><tbody><tr><td>트와이스</td><td>9</td></tr><tr><td>여자친구</td><td>6</td></tr><tr><td>오마이걸</td><td>7</td></tr><tr><td>잇지</td><td>5</td></tr><tr><td>우주소녀</td><td>13</td></tr></tbody></table></div>
+      </div>
+
+      <div class="teacher-note">
+        <strong>강의 멘트</strong>
+        <p>마지막 문제는 `조건1 AND 조건2` 구조입니다. 학생에게 ‘두 개의 필터를 차례대로 거른다’고 설명하면 좋습니다.</p>
+      </div>
+    </section>
+    
+
+    <section class="card">
+      <h2>마무리 정리</h2>
+      <ul class="summary-list">
+        <li>서브쿼리는 <strong>괄호 안쪽 SELECT부터 먼저 실행</strong>된다고 생각하면 됩니다.</li>
+        <li>서브쿼리 결과가 하나면 <code>=</code>, 여러 개일 수 있으면 <code>IN</code>을 사용합니다.</li>
+        <li>목록에 없는 데이터를 찾을 때는 <code>NOT IN</code>을 사용합니다.</li>
+        <li>문제가 어려워 보이면 한 번에 풀려고 하지 말고, <strong>서브쿼리만 먼저 실행</strong>해서 결과를 확인하면 됩니다.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
