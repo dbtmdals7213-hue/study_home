@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><title>DOM 실습</title>
+<style>body{font-family:sans-serif;max-width:600px;margin:40px auto;padding:0 20px;line-height:1.8;font-size:16px}button{padding:8px 16px;font-size:15px;cursor:pointer;margin:4px}input{padding:8px;font-size:15px;width:250px}#out{margin-top:16px;padding:12px;background:#eef1fb;border-radius:8px;min-height:24px}</style>
+</head>
+<body>
+<h3>주석 설명을 보며 직접 코드를 작성하세요. (아래 화면 요소를 자바스크립트로 다룹니다)</h3>
+<h1 id="title">원래 제목</h1>
+<p id="desc">원래 설명</p>
+<p id="score">점수: 0</p>
+<p id="hp">HP: 0</p>
+
+<script>
+/*
+    주제 : 요소 내용(글자) 바꾸기
+
+    - 요소.textContent = "새 글자"  → 화면의 글자를 바꿈
+    - 순서 : 선택(querySelector) → 변경(textContent)
+    - 점 표기법 + 값 넣기(=) 조합
+    - 화면을 새로고침해도 코드로 바꾼 글자가 보입니다
+*/
+
+// [1] id가 title 인 요소를 선택해 'title' 변수에 저장하세요.
+//     작성 공식: let 변수 = document.querySelector("#아이디");
+
+// [2] title 의 글자를 "새로운 제목" 으로 바꾸세요.
+//     작성 공식: 요소.textContent = "새 글자";
+
+// [3] id가 desc 인 요소를 선택해 'desc' 변수에 저장하세요.
+
+// [4] desc 의 글자를 "바뀐 설명입니다" 로 바꾸세요.
+
+// [5] id가 score 인 요소를 선택해 'scoreEl' 변수에 저장하세요.
+
+// [6] scoreEl 의 글자를 "점수: 100" 으로 바꾸세요.
+
+// [7] id가 hp 인 요소를 선택해 글자를 "HP: 80" 으로 바꾸세요.
+//     (선택과 변경을 한 줄에: document.querySelector("#hp").textContent = ...)
+//     작성 공식: document.querySelector("#아이디").textContent = "글자";
+
+// [8] 변경된 title 의 글자를 콘솔에도 출력하세요.
+//     작성 공식: console.log(요소.textContent);
+</script>
+</body>
+</html>
