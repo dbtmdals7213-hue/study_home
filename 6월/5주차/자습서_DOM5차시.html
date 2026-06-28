@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><title>DOM 실습</title>
+<style>body{font-family:sans-serif;max-width:600px;margin:40px auto;padding:0 20px;line-height:1.8;font-size:16px}button{padding:8px 16px;font-size:15px;cursor:pointer;margin:4px}input{padding:8px;font-size:15px;width:250px}#out{margin-top:16px;padding:12px;background:#eef1fb;border-radius:8px;min-height:24px}</style>
+</head>
+<body>
+<h3>주석 설명을 보며 직접 코드를 작성하세요. (아래 화면 요소를 자바스크립트로 다룹니다)</h3>
+<div id="card">
+  <h1 id="charName">이름</h1>
+  <p id="charHp">HP</p>
+  <p id="charLevel">레벨</p>
+</div>
+<h3>능력치</h3>
+<div id="stats"></div>
+
+<script>
+/*
+    주제 : [종합 미니 프로젝트] 캐릭터 상태창 화면 만들기
+
+    DOM 단원에서 배운 모든 것을 사용합니다.
+    - querySelector / textContent / style / createElement / appendChild
+
+    [완성 목표]
+    화면의 카드 요소들에 캐릭터 정보를 채우고, 색을 입히고,
+    능력치 목록을 새 요소로 만들어 화면에 완성된 상태창을 표시합니다.
+*/
+
+// ===== 1단계: 요소 선택 =====
+
+// [1] id가 charName 인 요소를 선택해 'nameEl' 에 저장하세요.
+//     작성 공식: let 변수 = document.querySelector("#아이디");
+
+// [2] id가 charHp 인 요소를 'hpEl' 에 저장하세요.
+
+// [3] id가 charLevel 인 요소를 'levelEl' 에 저장하세요.
+
+// ===== 2단계: 내용 채우기 (textContent) =====
+
+// [4] nameEl 의 글자를 "용감한기사" 로 바꾸세요.
+//     작성 공식: 요소.textContent = "글자";
+
+// [5] hpEl 의 글자를 "HP: 100" 으로 바꾸세요.
+
+// [6] levelEl 의 글자를 "레벨: 5" 로 바꾸세요.
+
+// ===== 3단계: 스타일 입히기 (style) =====
+
+// [7] nameEl 의 글자색을 "darkblue" 로 바꾸세요.
+//     작성 공식: 요소.style.color = "색";
+
+// [8] nameEl 의 글자 크기를 "32px" 로 바꾸세요.
+//     (font-size → fontSize)
+
+// [9] hpEl 의 글자색을 "crimson" 으로 바꾸세요.
+
+// ===== 4단계: 능력치 목록 만들기 (createElement) =====
+
+// [10] id가 stats 인 요소를 선택해 'stats' 에 저장하세요.
+
+// [11] 새 div 를 만들어 'atkEl' 에 저장하고, 글자를 "공격력: 50" 으로 채우세요.
+//      작성 공식: let 변수 = document.createElement("div"); 변수.textContent = "글자";
+
+// [12] atkEl 을 stats 안에 붙이세요.
+//      작성 공식: 부모.appendChild(자식);
+
+// [13] 새 div 를 만들어 글자를 "방어력: 20" 으로 채운 뒤 stats 에 붙이세요.
+
+// [14] 새 div 를 만들어 글자를 "골드: 200" 으로 채운 뒤 stats 에 붙이세요.
+
+// 완성! 화면에 캐릭터 상태창과 능력치 목록이 표시되면 성공입니다.
+</script>
+</body>
+</html>
