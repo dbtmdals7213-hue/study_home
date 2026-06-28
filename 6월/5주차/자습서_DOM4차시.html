@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><title>DOM 실습</title>
+<style>body{font-family:sans-serif;max-width:600px;margin:40px auto;padding:0 20px;line-height:1.8;font-size:16px}button{padding:8px 16px;font-size:15px;cursor:pointer;margin:4px}input{padding:8px;font-size:15px;width:250px}#out{margin-top:16px;padding:12px;background:#eef1fb;border-radius:8px;min-height:24px}</style>
+</head>
+<body>
+<h3>주석 설명을 보며 직접 코드를 작성하세요. (아래 화면 요소를 자바스크립트로 다룹니다)</h3>
+<h2>아이템 목록</h2>
+<div id="list"></div>
+
+<script>
+/*
+    주제 : 새 요소 만들기 (3단계)
+
+    - ① createElement("태그") : 새 요소를 만듦 (아직 화면에 없음)
+    - ② textContent : 내용 채우기
+    - ③ appendChild : 화면(부모)에 붙이기 → 이제 보임!
+    - 주의 : appendChild 안 하면 공중에 떠 있어 화면에 안 보임
+*/
+
+// [1] id가 list 인 요소를 선택해 'list' 변수에 저장하세요.
+//     작성 공식: let 변수 = document.querySelector("#아이디");
+
+// [2] 새 div 요소를 만들어 'item1' 변수에 저장하세요.
+//     작성 공식: let 변수 = document.createElement("태그");
+
+// [3] item1 의 글자를 "칼" 로 채우세요.
+//     작성 공식: 요소.textContent = "글자";
+
+// [4] item1 을 list 안에 붙이세요. (화면에 나타남)
+//     작성 공식: 부모.appendChild(자식);
+
+// [5] 새 div 를 만들어 'item2' 에 저장하고, 글자를 "방패" 로 채우세요.
+
+// [6] item2 를 list 안에 붙이세요.
+
+// [7] 새 div 를 만들어 글자를 "물약" 으로 채운 뒤 list 에 붙이세요.
+//     (변수에 담아 3단계로)
+
+// [8] list 안에 들어간 자식 요소 개수를 출력하세요.
+//     작성 공식: console.log(요소.children.length);
+</script>
+</body>
+</html>
