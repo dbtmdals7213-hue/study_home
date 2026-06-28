@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><title>실습 - DOM 5차시</title>
+<style>body{font-family:sans-serif;max-width:640px;margin:40px auto;padding:0 20px;line-height:1.7}
+.g{background:#fff7e8;border:1px solid #f0d999;border-radius:10px;padding:14px 16px;color:#6b4e16;margin-bottom:16px}
+code{background:#eee;border-radius:4px;padding:1px 6px;font-family:monospace}
+button{padding:8px 16px;border:0;border-radius:8px;background:#b45309;color:#fff;font-weight:700;cursor:pointer;font-size:1rem}
+.stage{border:2px dashed #d9c9a3;border-radius:10px;padding:20px;margin:16px 0;text-align:center}</style></head><body>
+  <h1>⌨️ 실습 - 캐릭터 상태창 화면 (미니 프로젝트)</h1>
+  <div class="g"><b>준비:</b> 브라우저로 열고, 화면 요소를 자바스크립트로 다뤄 종합 작품을 완성하세요!</div>
+  <script>
+/* [실습 HTML 요소]
+<div id="card">
+    <h1 id="charName">이름</h1>
+    <p id="charHp">HP</p>
+    <p id="charLevel">레벨</p>
+  </div>
+  <h3>능력치</h3>
+  <div id="stats"></div>
+*/
+
+// 주제 : [미니 프로젝트] 캐릭터 상태창 화면 만들기
+//   DOM 단원 전체 활용: querySelector/textContent/style/createElement/appendChild
+//   목표 : 카드에 정보 채우고 색 입히고 능력치 목록을 화면에 추가
+
+// ===== 1단계: 요소 선택 =====
+// [1] id가 charName, charHp, charLevel 인 요소를 각각 변수에 저장하세요.
+//     작성 공식: let 변수 = document.querySelector("#아이디");  ↓
+
+// ===== 2단계: 내용 채우기 (textContent) =====
+// [2] charName 글자를 "용감한기사" 로 바꾸세요.
+//     작성 공식: 요소.textContent = "글자";  ↓
+
+// [3] charHp 글자를 "HP: 100" 으로 바꾸세요.  ↓
+
+// [4] charLevel 글자를 "레벨: 5" 로 바꾸세요.  ↓
+
+// ===== 3단계: 스타일 입히기 (style) =====
+// [5] charName 글자색을 "darkblue" 로 바꾸세요.
+//     작성 공식: 요소.style.color = "색";  ↓
+
+// [6] charName 글자 크기를 "32px" 로 바꾸세요. (fontSize)  ↓
+
+// [7] charHp 글자색을 "crimson" 으로 바꾸세요.  ↓
+
+// ===== 4단계: 능력치 목록 만들기 (createElement) =====
+// [8] id가 stats 인 요소를 선택해 stats 에 저장하세요.  ↓
+
+// [9] 새 div 를 만들어 글자를 "공격력: 50" 으로 채운 뒤 stats 에 붙이세요.
+//     작성 공식: let el = document.createElement("div"); el.textContent = "글자"; stats.appendChild(el);  ↓
+
+// [10] 새 div 를 만들어 "방어력: 20" 으로 채운 뒤 stats 에 붙이세요.  ↓
+
+// [11] 새 div 를 만들어 "골드: 200" 으로 채운 뒤 stats 에 붙이세요.  ↓
+
+// ✅ 화면에 캐릭터 카드(이름·HP·레벨)와 능력치 목록이 나타나면 성공!
+  </script></body></html>
