@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><title>DOM 실습</title>
+<style>body{font-family:sans-serif;max-width:600px;margin:40px auto;padding:0 20px;line-height:1.8;font-size:16px}button{padding:8px 16px;font-size:15px;cursor:pointer;margin:4px}input{padding:8px;font-size:15px;width:250px}#out{margin-top:16px;padding:12px;background:#eef1fb;border-radius:8px;min-height:24px}</style>
+</head>
+<body>
+<h3>주석 설명을 보며 직접 코드를 작성하세요. (아래 화면 요소를 자바스크립트로 다룹니다)</h3>
+<h1 id="title">스타일을 바꿔보세요</h1>
+<p id="msg">이 문단도 바뀝니다</p>
+
+<script>
+/*
+    주제 : 요소 스타일(모양) 바꾸기
+
+    - 요소.style.속성 = 값  → 색·크기 등 스타일 변경
+    - CSS 속성명의 붙임표(-)는 카멜표기법으로
+        · color → style.color
+        · font-size → style.fontSize
+        · background-color → style.backgroundColor
+    - 값은 문자열로 ("red", "40px")
+*/
+
+// [1] id가 title 인 요소를 선택해 'title' 변수에 저장하세요.
+//     작성 공식: let 변수 = document.querySelector("#아이디");
+
+// [2] title 의 글자색을 빨강("red")으로 바꾸세요.
+//     작성 공식: 요소.style.color = "색";
+
+// [3] title 의 글자 크기를 "40px" 로 바꾸세요. (font-size → fontSize)
+//     작성 공식: 요소.style.fontSize = "크기";
+
+// [4] title 의 배경색을 노랑("yellow")으로 바꾸세요.
+//     (background-color → backgroundColor)
+//     작성 공식: 요소.style.backgroundColor = "색";
+
+// [5] id가 msg 인 요소를 선택해 'msg' 변수에 저장하세요.
+
+// [6] msg 의 글자색을 파랑("blue")으로 바꾸세요.
+
+// [7] msg 의 글자 크기를 "24px" 로 바꾸세요.
+
+// [8] msg 의 글자를 굵게 만드세요. (font-weight → fontWeight, 값은 "bold")
+//     작성 공식: 요소.style.fontWeight = "bold";
+</script>
+</body>
+</html>
